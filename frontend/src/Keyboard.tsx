@@ -18,6 +18,7 @@ export default function Keyboard({ onKey, letterStates }: Props) {
             <button
               key={key}
               className={`key ${letterStates[key] ?? ""}`}
+              data-wide={key === "ENTER" || key === "BACKSPACE" ? true : undefined}
               onClick={() => onKey(key)}
             >
               {key === "BACKSPACE" ? "⌫" : key}
