@@ -1,5 +1,5 @@
 # FastAPI app — game API entrypoint
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import nltk
@@ -18,6 +18,7 @@ app.add_middleware(
 
 # filter nltk corpus to valid 5-letter words once at startup
 WORDS = [w.lower() for w in nltk.corpus.words.words() if len(w) == 5 and w.isalpha()]
+WORD_SET = set(WORDS)
 
 
 class GuessRequest(BaseModel):
@@ -36,11 +37,13 @@ def get_word():
     return {"word": random.choice(WORDS)}
 
 
-# score each letter: green, yellow, or gray
+# score each letter: green, yellow, or gray — rejects invalid words
 @app.post("/guess")
 def check_guess(body: GuessRequest):
     word = body.word.lower()
     guess = body.guess.lower()
+    if guess not in WORD_SET:
+        raise HTTPException(status_code=400, detail="invalid word")
     result = ["gray"] * 5
     word_letters = list(word)
 

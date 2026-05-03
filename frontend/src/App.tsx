@@ -12,12 +12,14 @@ async function fetchWord(): Promise<string> {
   return data.word;
 }
 
-async function fetchGuess(word: string, guess: string): Promise<string[]> {
+// returns result array, or null if the guess is not a valid word
+async function fetchGuess(word: string, guess: string): Promise<string[] | null> {
   const res = await fetch(`${API}/guess`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ word, guess }),
   });
+  if (res.status === 400) return null;
   const data = await res.json();
   return data.result;
 }
@@ -28,6 +30,7 @@ export default function App() {
   const [results, setResults] = useState<string[][]>([]);
   const [current, setCurrent] = useState("");
   const [status, setStatus] = useState<"playing" | "won" | "lost">("playing");
+  const [error, setError] = useState("");
 
   const loadWord = useCallback(async () => {
     const w = await fetchWord();
@@ -36,6 +39,7 @@ export default function App() {
     setResults([]);
     setCurrent("");
     setStatus("playing");
+    setError("");
   }, []);
 
   useEffect(() => { loadWord(); }, [loadWord]);
@@ -43,6 +47,8 @@ export default function App() {
   const submitGuess = useCallback(async () => {
     if (current.length !== WORD_LENGTH || status !== "playing") return;
     const result = await fetchGuess(word, current);
+    if (!result) { setError("Not a valid word"); return; }
+    setError("");
     const newGuesses = [...guesses, current];
     const newResults = [...results, result];
     setGuesses(newGuesses);
@@ -57,6 +63,7 @@ export default function App() {
     if (key === "ENTER") { submitGuess(); return; }
     if (key === "BACKSPACE") { setCurrent(c => c.slice(0, -1)); return; }
     if (current.length < WORD_LENGTH && /^[A-Z]$/.test(key)) {
+      setError("");
       setCurrent(c => c + key);
     }
   }, [status, current, submitGuess]);
@@ -81,6 +88,7 @@ export default function App() {
     <div className="app">
       <h1>Definitely Not Wordle</h1>
       <Board guesses={guesses} results={results} current={current} />
+      {error && <div className="error">{error}</div>}
       {status !== "playing" && (
         <div className="status">
           {status === "won" ? "You won!" : `The word was ${word.toUpperCase()}`}

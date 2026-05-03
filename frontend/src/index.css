@@ -41,6 +41,9 @@ h1 { font-size: 24px; letter-spacing: 4px; text-transform: uppercase; }
 .tile.yellow { background: #b59f3b; border-color: #b59f3b; }
 .tile.gray   { background: #3a3a3c; border-color: #3a3a3c; }
 
+/* invalid word message */
+.error { color: #ff4444; font-size: 14px; font-weight: bold; }
+
 /* status */
 .status {
   display: flex;
