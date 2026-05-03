@@ -4,6 +4,8 @@ A fullstack Wordle clone built for the GoLinks 2026 Fullstack Intern Project.
 
 Guess the 5-letter word in 6 tries. Green = right spot, yellow = wrong spot, gray = not in word.
 
+**Live:** https://golinks-take-home-ten.vercel.app
+
 ## Stack
 - **Frontend:** React + TypeScript (Vite), hosted on Vercel
 - **Backend:** FastAPI (Python), hosted on Railway
