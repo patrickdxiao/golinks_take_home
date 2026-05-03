@@ -2,10 +2,8 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-import nltk
+from pathlib import Path
 import random
-
-nltk.download("words", quiet=True)
 
 app = FastAPI()
 
@@ -16,8 +14,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# filter nltk corpus to valid 5-letter words once at startup
-WORDS = [w.lower() for w in nltk.corpus.words.words() if len(w) == 5 and w.isalpha()]
+# load the Wordle word list once at startup
+WORDS = Path("words.txt").read_text().splitlines()
 WORD_SET = set(WORDS)
 
 
