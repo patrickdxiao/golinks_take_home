@@ -54,7 +54,7 @@ export default function App() {
     setGuesses(newGuesses);
     setResults(newResults);
     setCurrent("");
-    if (current === word) setStatus("won");
+    if (current.toLowerCase() === word) setStatus("won");
     else if (newGuesses.length === MAX_GUESSES) setStatus("lost");
   }, [current, word, guesses, results, status]);
 
@@ -88,7 +88,7 @@ export default function App() {
     <div className="app">
       <h1>Definitely Not Wordle</h1>
       <Board guesses={guesses} results={results} current={current} />
-      {error && <div className="error">{error}</div>}
+      <div className="error">{error}</div>
       {status !== "playing" && (
         <div className="status">
           {status === "won" ? "You won!" : `The word was ${word.toUpperCase()}`}

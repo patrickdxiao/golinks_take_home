@@ -12,7 +12,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 60px;
+  gap: 40px;
   padding: 32px 16px;
   width: 100%;
   max-width: 500px;
@@ -41,8 +41,8 @@ h1 { font-size: clamp(20px, 5vw, 28px); letter-spacing: clamp(2px, 1vw, 4px); te
 .tile.yellow { background: #b59f3b; border-color: #b59f3b; }
 .tile.gray   { background: #3a3a3c; border-color: #3a3a3c; }
 
-/* invalid word message */
-.error { color: #ff4444; font-size: 14px; font-weight: bold; }
+/* invalid word message — fixed height so it doesn't shift layout */
+.error { color: #ff4444; font-size: 14px; font-weight: bold; height: 20px; }
 
 /* status */
 .status {
