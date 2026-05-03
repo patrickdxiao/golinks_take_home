@@ -47,7 +47,7 @@ export default function App() {
   const submitGuess = useCallback(async () => {
     if (current.length !== WORD_LENGTH || status !== "playing") return;
     const result = await fetchGuess(word, current);
-    if (!result) { setError("Not a valid word"); return; }
+    if (!result) { setError("Invalid word"); return; }
     setError("");
     const newGuesses = [...guesses, current];
     const newResults = [...results, result];
@@ -88,13 +88,15 @@ export default function App() {
     <div className="app">
       <h1>Definitely Not Wordle</h1>
       <Board guesses={guesses} results={results} current={current} />
-      <div className="error">{error}</div>
-      {status !== "playing" && (
-        <div className="status">
-          {status === "won" ? "You won!" : `The word was ${word.toUpperCase()}`}
-          <button onClick={loadWord}>Play Again</button>
-        </div>
-      )}
+      <div className="status">
+        <div className="error">{error}</div>
+        {status !== "playing" && (
+          <>
+            <span>{status === "won" ? "You won!" : `The word was ${word.toUpperCase()}`}</span>
+            <button onClick={loadWord}>Play Again</button>
+          </>
+        )}
+      </div>
       <Keyboard onKey={onKey} letterStates={letterStates} />
     </div>
   );
